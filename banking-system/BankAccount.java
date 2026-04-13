@@ -1,3 +1,4 @@
+package banking.model;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,7 +6,6 @@ public abstract class BankAccount {
 
     /*
      * Private fields - only accessible within this class
-     * This is called encapsulation, it protects the data from being
      * directly changed from outside the class
      */
     private String accountNumber;
