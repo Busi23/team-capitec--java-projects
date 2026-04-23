@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.transaction;
+package banking.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 /**
@@ -52,7 +52,7 @@ public class Transaction {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); //Year-Month-Date Hour:Minute Pattern
         String formattedDate = timestamp.format(formatter);
         
-        return String.format("[%s] %s R %.2f Balanace: R %.2f", //R for Rand, %.2f to show 2 decimal places
+        return String.format("[%s] %s R %.2f Balance: R %.2f", //R for Rand, %.2f to show 2 decimal places
                 formattedDate, type.name(), amount, balanceAfter);          
     }
 }
