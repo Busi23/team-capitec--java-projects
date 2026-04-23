@@ -56,3 +56,34 @@ public abstract class BankAccount {
      */
     public abstract void withdraw(double amount) throws InsufficientFundsException;
 }
+
+    public void deposit(double amount) {
+    if (amount <= 0) {
+        System.out.println("Deposit amount must be greater than 0.");
+        return;
+    }
+
+    balance += amount;
+
+    Transaction transaction = new Transaction("DEPOSIT", amount);
+    transactions.add(transaction);
+
+    System.out.println("Deposit successful.");
+}
+
+public void printStatement() {
+    System.out.println("Account Number: " + accountNumber);
+    System.out.println("Owner Name: " + ownerName);
+    System.out.println("Current Balance: " + balance);
+
+    System.out.println("Last Transactions:");
+
+    int size = transactions.size();
+    int start = Math.max(0, size - 5);
+
+    for (int i = start; i < size; i++) {
+        System.out.println(transactions.get(i));
+    }
+}
+
+}
