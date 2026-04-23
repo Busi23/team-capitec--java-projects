@@ -56,7 +56,6 @@ public abstract class BankAccount {
      */
     public abstract void withdraw(double amount) throws InsufficientFundsException;
 }
- public abstract void withdraw(double amount) throws InsufficientFundsException;
 
     public void deposit(double amount) {
     if (amount <= 0) {
