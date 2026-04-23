@@ -1,72 +1,88 @@
+package banking.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BankAccount1 {
+public abstract class BankAccount {
 
+    /*
+     * Private fields - only accessible within this class
+     * directly changed from outside the class
+     */
     private String accountNumber;
     private String ownerName;
     private double balance;
-    private List<String> transactions = new ArrayList<>();
+    // Using Transaction objects instead of Strings for proper type representation
+    private List<Transaction> transactions;
 
-    public BankAccount1(String accountNumber, String ownerName, double balance) {
+    /*
+     * Public constructor - allows subclasses and other classes to
+     * create a BankAccount object with the required details
+     * 'this' refers to the current object's fields
+     * We use it to distinguish between the field and the parameter
+     * which have the same name
+     */
+    public BankAccount(String accountNumber, String ownerName, double balance) {
         this.accountNumber = accountNumber;
         this.ownerName = ownerName;
         this.balance = balance;
+        // ArrayList initialized in constructor as required
+        this.transactions = new ArrayList<>();
     }
 
+    /*
+     * Public getters - since fields are private, these methods are the
+     * only way outside classes can READ the field values (read-only access)
+     */
     public String getAccountNumber() { return accountNumber; }
     public String getOwnerName() { return ownerName; }
     public double getBalance() { return balance; }
-    public List<String> getTransactions() { return transactions; }
+    // Returning List of Transaction objects
+    public List<Transaction> getTransactions() { return transactions; }
 
-    public void deductFromBalance(double amount) {
+    /*
+     * Protected method - only accessible within this class and its subclasses
+     * No transaction recording here, just deducts the amount from balance
+     */
+    protected void deductFromBalance(double amount) {
         balance -= amount;
-        transactions.add("Deducted: " + amount);
     }
 
-    public abstract void withdraw(double amount);
-
+    /*
+     * Abstract method - has no body/implementation here
+     * Every subclass (e.g. SavingsAccount, CurrentAccount) MUST
+     * provide their own version of withdraw() because each account
+     * type may have different rules (e.g. fees, limits)
+     * Throws InsufficientFundsException if balance is too low
+     */
+    public abstract void withdraw(double amount) throws InsufficientFundsException;
 
     public void deposit(double amount) {
-        // 1. Validate input
-        if (amount <= 0) {
-            System.out.println("Deposit amount must be greater than 0.");
-            return;
-        }
-
-        // 2. Update balance
-        balance += amount;
-
-        // 3. Record transaction
-        transactions.add("Deposited: " + amount);
-
-        System.out.println("Deposit successful.");
+    if (amount <= 0) {
+        System.out.println("Deposit amount must be greater than 0.");
+        return;
     }
 
-    public void printStatement() {
-        System.out.println("Account Number: " + accountNumber);
-        System.out.println("Owner Name: " + ownerName);
-        System.out.println("Current Balance: " + balance);
+    balance += amount;
 
-        System.out.println("Transaction History:");
-        for (String t : transactions) {
-            System.out.println(t);
-        }
+    Transaction transaction = new Transaction("DEPOSIT", amount);
+    transactions.add(transaction);
 
-public class Main {
-    public static void main(String[] args) {
-
-        BankAccount1 acc = new BankAccount1("123", "Sego", 1000) {
-            @Override
-            public void withdraw(double amount) {
-                deductFromBalance(amount);
-            }
-        };
-
-        acc.deposit(500);
-        acc.printStatement();
-    }
+    System.out.println("Deposit successful.");
 }
+
+public void printStatement() {
+    System.out.println("Account Number: " + accountNumber);
+    System.out.println("Owner Name: " + ownerName);
+    System.out.println("Current Balance: " + balance);
+
+    System.out.println("Last Transactions:");
+
+    int size = transactions.size();
+    int start = Math.max(0, size - 5);
+
+    for (int i = start; i < size; i++) {
+        System.out.println(transactions.get(i));
     }
 }
 
+}
